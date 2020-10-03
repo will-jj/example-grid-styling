@@ -74,11 +74,11 @@ namespace DataGridStyle
         /// Add padding to the rows in the DataGridView table
         /// </summary>
         /// <param name="table">DataGridView table to add padding to</param>
-        public void PadRows(DataGridView table)
+        public void PadRows(DataGridView table, int left = 10, int top = 10, int right = 10, int bottom = 10)
         {
 
-            Padding generalPadding = new Padding(30, 10, 10, 10);
-            Padding nameColumns = new Padding(0, 10, 0, 10);
+            Padding generalPadding = new Padding(left, right, top, bottom);
+            //Padding nameColumns = new Padding(0, 10, 0, 10);
             table.RowTemplate.DefaultCellStyle.Padding = generalPadding;
             table.ColumnHeadersDefaultCellStyle.Padding = generalPadding;
 
