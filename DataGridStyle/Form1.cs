@@ -171,7 +171,7 @@ namespace DataGridStyle
 
             Color purpleSectorColour = new Color();
             purpleSectorColour = Color.FromArgb(127, 4, 158);
-
+            
             for (int i = 0; i < dataGridViewTTable.Rows.Count; i++)
             {
                 var value = Convert.ToDouble(dataGridViewTTable.Rows[i].Cells[S1].Value.ToString());
@@ -179,7 +179,7 @@ namespace DataGridStyle
                 {
                     dataGridViewTTable.Rows[i].Cells[S1].Style.ForeColor = Color.White;
                     dataGridViewTTable.Rows[i].Cells[S1].Style.BackColor = purpleSectorColour;
-
+                    break;
                 }
                 if (value == max)
                 {
