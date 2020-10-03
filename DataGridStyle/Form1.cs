@@ -127,6 +127,7 @@ namespace DataGridStyle
 
 
 
+
         }
 
         /// <summary>
@@ -161,11 +162,40 @@ namespace DataGridStyle
         }
 
 
+        private void ColourSector()
+        {
+
+            int S1 = 4;
+            var min =dataGridViewTTable.Rows.Cast<DataGridViewRow>().Min(r => Convert.ToDouble(r.Cells[S1].Value));
+            var max =dataGridViewTTable.Rows.Cast<DataGridViewRow>().Max(r => Convert.ToDouble(r.Cells[S1].Value));
+
+            Color purpleSectorColour = new Color();
+            purpleSectorColour = Color.FromArgb(127, 4, 158);
+
+            for (int i = 0; i < dataGridViewTTable.Rows.Count; i++)
+            {
+                var value = Convert.ToDouble(dataGridViewTTable.Rows[i].Cells[S1].Value.ToString());
+                if (value == min)
+                {
+                    dataGridViewTTable.Rows[i].Cells[S1].Style.ForeColor = Color.White;
+                    dataGridViewTTable.Rows[i].Cells[S1].Style.BackColor = purpleSectorColour;
+
+                }
+                if (value == max)
+                {
+                    //dataGridViewTTable.Rows[i].DefaultCellStyle.ForeColor = Color.Green;
+                }
+            }
+        }
+
+       
+
 
         private void buttonLoadandStyle_Click(object sender, EventArgs e)
         {
             // I know there are better ways to point to this file
-            ReadCSV("../../../test.csv");
+            ReadCSV("../../../testModified.csv");
+            ColourSector();
             //ColourRows(dataGridViewTTable);
             //PadRows(dataGridViewTTable);
 
@@ -179,8 +209,8 @@ namespace DataGridStyle
             Padding generalPadding = new Padding(10, 10, 10, 10);
             dataGridViewTTable.RowTemplate.DefaultCellStyle.Padding = generalPadding;
             dataGridViewTTable.ColumnHeadersDefaultCellStyle.Padding = generalPadding;
-            dataGridViewTTable.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#f5f5f5");
-            dataGridViewTTable.DefaultCellStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#fff");
+            dataGridViewTTable.AlternatingRowsDefaultCellStyle.BackColor = ColorTranslator.FromHtml("#f5f5f5");
+            dataGridViewTTable.DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#fff");
         }
     }
 }
