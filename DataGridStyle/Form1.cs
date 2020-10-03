@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -16,7 +16,7 @@ namespace DataGridStyle
         }
 
 
-        public void StyleTable(DataGridView table, int fontSize = 14)
+        public void StyleTable(DataGridView table, int fontSize = 20)
         {
             table.AutoSize = true;
 
