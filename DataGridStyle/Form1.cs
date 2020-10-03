@@ -52,7 +52,7 @@ namespace DataGridStyle
         /// <param name="table">DataGridView table to colour</param>
         /// <param name="evenColour">HTML string for even row back colour (default white)</param>
         /// <param name="oddColour">HTML string for odd row back colour (default grey)</param>
-        public void ColourRows(DataGridView table, string evenColour="#fff", string oddColour= "#f5f5f5")
+        public void ColourRows(DataGridView table, string evenColour = "#fff", string oddColour = "#f5f5f5")
         {
 
             foreach (DataGridViewRow row in table.Rows)
