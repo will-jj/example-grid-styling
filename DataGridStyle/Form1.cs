@@ -52,6 +52,10 @@ namespace DataGridStyle
         public void ColourRows(DataGridView table, string evenColour = "#fff", string oddColour = "#f5f5f5")
         {
 
+            //Can alternatively set the padding on form load using instead of iterating through rows:
+            //dataGridViewTTable.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#f5f5f5");
+            //dataGridViewTTable.DefaultCellStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#fff");
+
             foreach (DataGridViewRow row in table.Rows)
             {
                 if (row.Index % 2 == 0)
@@ -162,10 +166,21 @@ namespace DataGridStyle
         {
             // I know there are better ways to point to this file
             ReadCSV("../../../test.csv");
-            StyleTable(dataGridViewTTable);
-            ColourRows(dataGridViewTTable);
-            PadRows(dataGridViewTTable);
+            //ColourRows(dataGridViewTTable);
+            //PadRows(dataGridViewTTable);
 
+        }
+
+
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            StyleTable(dataGridViewTTable);
+            Padding generalPadding = new Padding(10, 10, 10, 10);
+            dataGridViewTTable.RowTemplate.DefaultCellStyle.Padding = generalPadding;
+            dataGridViewTTable.ColumnHeadersDefaultCellStyle.Padding = generalPadding;
+            dataGridViewTTable.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#f5f5f5");
+            dataGridViewTTable.DefaultCellStyle.BackColor = System.Drawing.ColorTranslator.FromHtml("#fff");
         }
     }
 }
