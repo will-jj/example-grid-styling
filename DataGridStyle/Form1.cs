@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -16,7 +16,7 @@ namespace DataGridStyle
         }
 
 
-        public void StyleTable(DataGridView table)
+        public void StyleTable(DataGridView table, int fontSize = 14)
         {
             table.AutoSize = true;
 
@@ -32,7 +32,6 @@ namespace DataGridStyle
             table.RowHeadersVisible = false;
             table.AllowUserToAddRows = false;
             table.BackgroundColor = SystemColors.ControlLightLight;
-            int fontSize = 14;
             table.DefaultCellStyle.Font = new Font("Tahoma", fontSize);
             table.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", fontSize + 3);
 
