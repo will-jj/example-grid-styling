@@ -38,11 +38,8 @@ namespace DataGridStyle
             table.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             table.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
-            ColourRows(table);
-            PadRows(table);
 
         }
-
 
 
 
@@ -166,6 +163,8 @@ namespace DataGridStyle
             // I know there are better ways to point to this file
             ReadCSV("../../../test.csv");
             StyleTable(dataGridViewTTable);
+            ColourRows(dataGridViewTTable);
+            PadRows(dataGridViewTTable);
 
         }
     }
