@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
@@ -291,19 +288,7 @@ border-bottom: 1px solid black;
             int exitCode = -1;
             inFileName = "./table.html ";
             File.WriteAllText(inFileName, html);
-
-
-            // run the conversion utility
-            /*
-            psi.UseShellExecute = false;
-            psi.CreateNoWindow = true;
-            psi.RedirectStandardInput = true;
-            psi.RedirectStandardOutput = true;
-            psi.RedirectStandardError = true;
-            */
-            // note that we tell wkhtmltopdf to be quiet and not run scripts
-            // NOTE: I couldn't figure out a way to get both stdin and stdout redirected so we have to write to a file and then clean up afterwards
-
+                     
             try
             {
                 using (Process myProcess = new Process())
@@ -331,52 +316,5 @@ border-bottom: 1px solid black;
             return exitCode;
         }
 
-
-        // Code I gave up on (did not handle css properly)
-
-        /*
-public void ConvertHtmlToImage(string meme)
-{
-    Image image = TheArtOfDev.HtmlRenderer.WinForms.HtmlRender.RenderToImage(meme);
-    image.Save("../../../DataGridViewBrowser2.png", ImageFormat.Png);
-}
-
-// from https://stackoverflow.com/questions/17832304/convert-html-string-to-image there is a whole package on nuget but this seems pretty lightweight 
-private static void StartBrowser(string source)
-{
-    var th = new Thread(() =>
-    {
-        var webBrowser = new WebBrowser();
-        webBrowser.ScrollBarsEnabled = false;
-        webBrowser.DocumentCompleted +=
-            webBrowser_DocumentCompleted;
-        webBrowser.DocumentText = source;
-        Application.Run();
-    });
-    th.SetApartmentState(ApartmentState.STA);
-    th.Start();
-}
-
-static void
-    webBrowser_DocumentCompleted(
-    object sender,
-    WebBrowserDocumentCompletedEventArgs e)
-{
-    var webBrowser = (WebBrowser)sender;
-    using (Bitmap bitmap =
-        new Bitmap(
-            webBrowser.Width,
-            webBrowser.Height))
-    {
-        webBrowser
-            .DrawToBitmap(
-            bitmap,
-            new System.Drawing
-                .Rectangle(0, 0, bitmap.Width, bitmap.Height));
-        bitmap.Save("../../../DataGridViewBrowser3.jpg",
-            System.Drawing.Imaging.ImageFormat.Jpeg);
-    }
-}
-*/
     }
 }
