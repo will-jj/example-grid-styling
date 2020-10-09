@@ -22,13 +22,13 @@ namespace DataGridStyle
             "delta"
         };
 
-        public static int TableToJpg(DataGridView dgv, Font formFont, string imageName, int width = 1024)
+        public static int TableToJpg(DataGridView dgv, string imageName, int width = 1024)
         {
-            string html = ConvertDataGridViewToHTMLWithFormatting(dgv, formFont);
+            string html = ConvertDataGridViewToHTMLWithFormatting(dgv);
             return WriteImage(html, imageName, width);
         }
         // Inspired by pandas method and built upon: https://stackoverflow.com/questions/16008477/export-datagridview-to-html-page
-        private static string ConvertDataGridViewToHTMLWithFormatting(DataGridView dgv, Font formFont)
+        private static string ConvertDataGridViewToHTMLWithFormatting(DataGridView dgv)
         {
             string tableID = "timeTrialTable";
             StringBuilder sb = new StringBuilder();
@@ -40,7 +40,7 @@ namespace DataGridStyle
             for (int i = 0; i < dgv.Columns.Count; i++)
             {
                 sb.Append(DGVHeaderCellToHTMLWithFormatting(dgv, i));
-                sb.Append(DGVCellFontAndValueToHTML(dgv.Columns[i].HeaderText, dgv.Columns[i].HeaderCell.Style.Font, formFont));
+                sb.Append(DGVCellFontAndValueToHTML(dgv.Columns[i].HeaderText));
                 sb.AppendLine("</th>");
             }
             sb.AppendLine("</tr>");
@@ -53,7 +53,7 @@ namespace DataGridStyle
                 {
                     sb.AppendLine(DGVCellToHTMLWithFormatting(dgv, rowIndex, dgvc.ColumnIndex, tableID));
                     string cellValue = dgvc.Value == null ? string.Empty : dgvc.Value.ToString();
-                    sb.AppendLine(DGVCellFontAndValueToHTML(cellValue, dgvc.Style.Font, formFont));
+                    sb.AppendLine(DGVCellFontAndValueToHTML(cellValue));
                     sb.AppendLine("</td>");
                 }
                 sb.AppendLine("</tr>");
@@ -69,7 +69,6 @@ namespace DataGridStyle
             StringBuilder sb = new StringBuilder();
             sb.Append(String.Format("<th class = \"col-{0}\"", headings[col]));
             sb.Append(DGVCellColorToHTML(dgv.Columns[col].HeaderCell.Style.ForeColor, dgv.Columns[col].HeaderCell.Style.BackColor));
-            sb.Append(DGVCellAlignmentToHTML(dgv.Columns[col].HeaderCell.Style.Alignment));
             sb.Append(">");
             return sb.ToString();
         }
@@ -81,7 +80,6 @@ namespace DataGridStyle
 
             sb.Append(DGVCellClass(row, col, tableID));
             sb.Append(DGVCellColorToHTML(dgv.Rows[row].Cells[col].Style.ForeColor, dgv.Rows[row].Cells[col].Style.BackColor));
-            sb.Append(DGVCellAlignmentToHTML(dgv.Rows[row].Cells[col].Style.Alignment));
             sb.Append(">");
             return sb.ToString();
         }
@@ -119,105 +117,12 @@ namespace DataGridStyle
             return sb.ToString();
         }
 
-        private static string DGVCellFontAndValueToHTML(string value, Font font, Font formFont)
+        private static string DGVCellFontAndValueToHTML(string value)
         {
-            //If no font has been set then assume its the default as someone would be expected in HTML or Excel
-            if (font == null || font == formFont && !(font.Bold | font.Italic | font.Underline | font.Strikeout)) return value;
-            StringBuilder sb = new StringBuilder();
-            sb.Append(" ");
-            if (font.Bold) sb.Append("<b>");
-            if (font.Italic) sb.Append("<i>");
-            if (font.Strikeout) sb.Append("<strike>");
-
-            //The <u> element was deprecated in HTML 4.01. The new HTML 5 tag is: text-decoration: underline
-            if (font.Underline) sb.Append("<u>");
-
-            string size = string.Empty;
-            if (font.Size != formFont.Size) size = "font-size: " + font.Size + "pt;";
-
-            //The <font> tag is not supported in HTML5. Use CSS or a span instead. 
-            if (font.FontFamily.Name != formFont.Name)
-            {
-                sb.Append("<span style=\"font-family: ");
-                sb.Append(font.FontFamily.Name);
-                sb.Append("; ");
-                sb.Append(size);
-                sb.Append("\">");
-            }
-            sb.Append(value);
-            if (font.FontFamily.Name != formFont.Name) sb.Append("</span>");
-
-            if (font.Underline) sb.Append("</u>");
-            if (font.Strikeout) sb.Append("</strike>");
-            if (font.Italic) sb.Append("</i>");
-            if (font.Bold) sb.Append("</b>");
-
-            return sb.ToString();
+             return value;
+           
         }
 
-        private static string DGVCellAlignmentToHTML(DataGridViewContentAlignment align)
-        {
-            if (align == DataGridViewContentAlignment.NotSet) return string.Empty;
-
-            string horizontalAlignment = string.Empty;
-            string verticalAlignment = string.Empty;
-            CellAlignment(align, ref horizontalAlignment, ref verticalAlignment);
-            StringBuilder sb = new StringBuilder();
-            sb.Append(" align='");
-            sb.Append(horizontalAlignment);
-            sb.Append("' valign='");
-            sb.Append(verticalAlignment);
-            sb.Append("'");
-            return sb.ToString();
-        }
-
-        private static void CellAlignment(DataGridViewContentAlignment align, ref string horizontalAlignment, ref string verticalAlignment)
-        {
-            switch (align)
-            {
-                case DataGridViewContentAlignment.MiddleRight:
-                    horizontalAlignment = "right";
-                    verticalAlignment = "middle";
-                    break;
-                case DataGridViewContentAlignment.MiddleLeft:
-                    horizontalAlignment = "left";
-                    verticalAlignment = "middle";
-                    break;
-                case DataGridViewContentAlignment.MiddleCenter:
-                    horizontalAlignment = "centre";
-                    verticalAlignment = "middle";
-                    break;
-                case DataGridViewContentAlignment.TopCenter:
-                    horizontalAlignment = "centre";
-                    verticalAlignment = "top";
-                    break;
-                case DataGridViewContentAlignment.BottomCenter:
-                    horizontalAlignment = "centre";
-                    verticalAlignment = "bottom";
-                    break;
-                case DataGridViewContentAlignment.TopLeft:
-                    horizontalAlignment = "left";
-                    verticalAlignment = "top";
-                    break;
-                case DataGridViewContentAlignment.BottomLeft:
-                    horizontalAlignment = "left";
-                    verticalAlignment = "bottom";
-                    break;
-                case DataGridViewContentAlignment.TopRight:
-                    horizontalAlignment = "right";
-                    verticalAlignment = "top";
-                    break;
-                case DataGridViewContentAlignment.BottomRight:
-                    horizontalAlignment = "right";
-                    verticalAlignment = "bottom";
-                    break;
-
-                default: //DataGridViewContentAlignment.NotSet
-                    horizontalAlignment = "centre";
-                    verticalAlignment = "middle";
-                    break;
-            }
-        }
         //TODO: variables and not just a big string in the function
         private static string DGVStyle(string tableID)
 

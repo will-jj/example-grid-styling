@@ -97,7 +97,7 @@ namespace DataGridStyle
         private void buttonSave_Click(object sender, EventArgs e)
         {
             string imageName = "./table.jpg";
-            int exitCode = TableExporter.TableToJpg(dataGridViewTTable, this.Font, imageName);
+            int exitCode = TableExporter.TableToJpg(dataGridViewTTable, imageName);
             if (exitCode == 0)
             {
                 pictureBox1.ImageLocation = imageName;
