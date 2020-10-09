@@ -82,6 +82,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /D /Y /R /H "$(SolutionDir)wkhtmltoimage\*" "$(TargetDir)"</PostBuildEvent>
+    <PostBuildEvent>xcopy /D /Y /R /H "$(SolutionDir)wkhtmltoimage\*.exe" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
