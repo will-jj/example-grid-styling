@@ -22,10 +22,10 @@ namespace DataGridStyle
             "delta"
         };
 
-        public static int TableToJpg(DataGridView dgv, Font formFont, string imageName)
+        public static int TableToJpg(DataGridView dgv, Font formFont, string imageName, int width = 1024)
         {
             string html = ConvertDataGridViewToHTMLWithFormatting(dgv, formFont);
-            return WriteImage(html, imageName);
+            return WriteImage(html, imageName, width);
         }
         // Inspired by pandas method and built upon: https://stackoverflow.com/questions/16008477/export-datagridview-to-html-page
         private static string ConvertDataGridViewToHTMLWithFormatting(DataGridView dgv, Font formFont)
@@ -282,13 +282,14 @@ border-bottom: 1px solid black;
 <body style = ""background-color:rgb(77, 77, 77);"" >", tableID);
         }
         // could replace use of the exe with use of the DLL
-        private static int WriteImage(string html, string imageName)
+        private static int WriteImage(string html, string imageName, int width)
         {
             string inFileName;
             int exitCode = -1;
             inFileName = "./table.html ";
             File.WriteAllText(inFileName, html);
-                     
+            string arguments = String.Format("-q --quality 100 --width {0} {1} {2}", width, inFileName, imageName);
+
             try
             {
                 using (Process myProcess = new Process())
@@ -296,7 +297,7 @@ border-bottom: 1px solid black;
                     myProcess.StartInfo.UseShellExecute = false;
                     myProcess.StartInfo.FileName = "./wkhtmltoimage.exe";
                     myProcess.StartInfo.CreateNoWindow = true;
-                    myProcess.StartInfo.Arguments = "-q --quality 100 --width 1024 " + inFileName + imageName;
+                    myProcess.StartInfo.Arguments = arguments;
                     myProcess.Start();
                     myProcess.WaitForExit(10000);
                     exitCode = myProcess.ExitCode;
