@@ -10,11 +10,12 @@ namespace DataGridStyle
 {
     public class TableExporter
     {
-        private static readonly string[] headings =
+        private static readonly string[] timeTrialHeadings =
         {
-            "name",
+            "position",
             "car",
             "class",
+             "name",
             "sector",
             "sector",
             "sector",
@@ -22,39 +23,68 @@ namespace DataGridStyle
             "delta"
         };
 
-        public static int TableToJpg(DataGridView dgv, string imageName, int width = 1024)
+        public enum TableType
         {
-            string html = ConvertDataGridViewToHTMLWithFormatting(dgv);
+            timeTrialTable,
+            leagueResults
+        }
+
+        public static int TableToJpg(DataGridView dgv, string imageName, int width = 1024, TableType tableType = TableType.timeTrialTable)
+        {
+            string html = ConvertDataGridViewToHTMLWithFormatting(dgv, tableType);
             return WriteImage(html, imageName, width);
         }
         // Inspired by pandas method and built upon: https://stackoverflow.com/questions/16008477/export-datagridview-to-html-page
-        private static string ConvertDataGridViewToHTMLWithFormatting(DataGridView dgv)
+        private static string ConvertDataGridViewToHTMLWithFormatting(DataGridView dgv, TableType tableType)
         {
             string tableID = "timeTrialTable";
             StringBuilder sb = new StringBuilder();
             //create html & table
-            sb.AppendLine(DGVStyle(tableID));
-            sb.AppendLine((String.Format("<table id = \"{0}\"><thead>", tableID)));
+            sb.AppendLine("<meta charset = \"UTF-8\"/>");
+            sb.AppendLine("<html>");
+            sb.AppendLine("<style type = \"text/css\">");
+            sb.AppendLine(DGVStyle(tableType));
+            sb.AppendLine("</style>");
+            sb.AppendLine("</head>");
+            sb.AppendLine("<body style = \"background-color:rgb(77, 77, 77);\" >");
+            sb.AppendLine("<table>");
+            sb.AppendLine("<thead>");
             sb.AppendLine("<tr>");
             //create table header
             for (int i = 0; i < dgv.Columns.Count; i++)
             {
-                sb.Append(DGVHeaderCellToHTMLWithFormatting(dgv, i));
-                sb.Append(DGVCellFontAndValueToHTML(dgv.Columns[i].HeaderText));
-                sb.AppendLine("</th>");
+                if (i == 0)
+                {
+                    sb.AppendLine("<th class=\"blank position\"></th>");
+                }
+                else
+                {
+                    sb.Append(DGVHeaderCellToHTMLWithFormatting(dgv, i));
+                    sb.Append(DGVCellFontAndValueToHTML(dgv.Columns[i].HeaderText));
+                    sb.AppendLine("</th>");
+                }
             }
             sb.AppendLine("</tr>");
             sb.AppendLine("</thead>");
             //create table body
             for (int rowIndex = 0; rowIndex < dgv.Rows.Count; rowIndex++)
             {
+
                 sb.AppendLine("<tr>");
                 foreach (DataGridViewCell dgvc in dgv.Rows[rowIndex].Cells)
                 {
-                    sb.AppendLine(DGVCellToHTMLWithFormatting(dgv, rowIndex, dgvc.ColumnIndex, tableID));
                     string cellValue = dgvc.Value == null ? string.Empty : dgvc.Value.ToString();
-                    sb.AppendLine(DGVCellFontAndValueToHTML(cellValue));
-                    sb.AppendLine("</td>");
+
+                    if (dgvc.ColumnIndex == 0)
+                    {
+                        sb.AppendLine(String.Format("<th class = \"position row{0}\">{1}</th>", rowIndex, cellValue));
+                    }
+                    else
+                    {
+                        sb.AppendLine(DGVCellToHTMLWithFormatting(dgv, rowIndex, dgvc.ColumnIndex, tableID));
+                        sb.AppendLine(DGVCellFontAndValueToHTML(cellValue));
+                        sb.AppendLine("</td>");
+                    }
                 }
                 sb.AppendLine("</tr>");
             }
@@ -67,7 +97,7 @@ namespace DataGridStyle
         private static string DGVHeaderCellToHTMLWithFormatting(DataGridView dgv, int col)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(String.Format("<th class = \"col-{0}\"", headings[col]));
+            sb.Append(String.Format("<th class = \"col-{0}\"", timeTrialHeadings[col]));
             sb.Append(DGVCellColorToHTML(dgv.Columns[col].HeaderCell.Style.ForeColor, dgv.Columns[col].HeaderCell.Style.BackColor));
             sb.Append(">");
             return sb.ToString();
@@ -86,7 +116,7 @@ namespace DataGridStyle
 
         private static string DGVCellClass(int row, int col, string tableID)
         {
-            return String.Format(" class = \"row{0} col-{1}\" id = \"{2}row{0}_col-{1}\" ", row, headings[col], tableID);
+            return String.Format(" class = \"row{0} col-{1}\" id = \"{2}row{0}_col-{1}\" ", row, timeTrialHeadings[col], tableID);
         }
 
         private static string DGVCellColorToHTML(Color foreColor, Color backColor)
@@ -119,73 +149,36 @@ namespace DataGridStyle
 
         private static string DGVCellFontAndValueToHTML(string value)
         {
-             return value;
-           
+            return value;
+
         }
 
         //TODO: variables and not just a big string in the function
-        private static string DGVStyle(string tableID)
+        // Variable tableID not really needed for a page with only one table 
+        // If it needs to be reintroduced just use a unique item like {{tableID}} and search and replace
+        private static string DGVStyle(TableType tableType)
 
         {
+            string style;
+            switch (tableType)
+            {
+                case TableType.timeTrialTable:
+                    {
+                        style = DataGridStyle.Properties.Resources.timeTrialTableStyle;
+                        break;
+                    }
+                case TableType.leagueResults:
+                    {
+                        style = DataGridStyle.Properties.Resources.leagueResultsTableStyle;
+                        break;
+                    }
+                default: throw new System.ArgumentException("No matching style found", "Styling"); ;
+            }
+            return style;
 
-            return String.Format(@"
-<meta charset=""UTF-8""/>
-<html>
-<head>
-<style type=""text/css"">
-[class^=""row0 col-name""]{{background-color: rgba(255, 217, 0, 0.61);}}
-[class^=""row1 col-name""]{{background-color: rgb(151, 151, 151);}}
-[class^=""row2 col-name""]{{background-color: rgb(205,127,50);}}
-    
-.col-name {{width: 35%;}}
-.col-car  {{width: 14%;}}
-.col-class {{
-  width: 5%;
-  text-align: center;
-}}
-.col-sector {{
-  width: 10%;
-  text-align: center;
-}}
 
-.col-lap {{
-  width: 10%;
-  text-align: center;
-}}
-
-.col-delta {{
-  width: 6%;
-  text-align: center;
-}}
-   
-#{0} {{
-    margin: 0;
-          font-family: 'Roboto', sans-serif;
-          border-collapse: collapse;
-          border-spacing: 0;
-          color: white;
-          border: none;
-          table-layout: fixed;
-    }}    #{0} thead {{
-          background-color: rgb(0, 0, 0);
-border-bottom: 1px solid black;
-    }}    #{0} tbody tr:nth-child(even) {{
-          background-color: rgb(65, 62, 62);
-    }}    #{0} tbody tr:nth-child(odd) {{
-          background-color: #2c2b2b;
-    }}    #{0} td {{
-          padding: .5em;
-    }}    #{0} th {{
-          font-size: 115%;
-          text-align: center;
-    }}    #{0} caption {{
-          caption-side: bottom;
-    }}   
-
-</style>
-</head>
-<body style = ""background-color:rgb(77, 77, 77);"" >", tableID);
         }
+
         // could replace use of the exe with use of the DLL
         private static int WriteImage(string html, string imageName, int width)
         {

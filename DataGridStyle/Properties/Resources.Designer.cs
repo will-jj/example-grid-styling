@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DataGridStyle.Properties
-{
-
-
+namespace DataGridStyle.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -19,52 +19,116 @@ namespace DataGridStyle.Properties
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources
-    {
-
+    internal class Resources {
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources()
-        {
+        internal Resources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager
-        {
-            get
-            {
-                if ((resourceMan == null))
-                {
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DataGridStyle.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture
-        {
-            get
-            {
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
                 return resourceCulture;
             }
-            set
-            {
+            set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [class^=&quot;row0 col-name&quot;]{background-color: rgba(255, 217, 0, 0.61);}
+        ///[class^=&quot;row1 col-name&quot;]{background-color: rgb(151, 151, 151);}
+        ///[class^=&quot;row2 col-name&quot;]{background-color: rgb(205,127,50);}
+        ///    
+        ///.col-name {width: 35%;}
+        ///.col-car  {width: 14%;}
+        ///.col-class {
+        ///  width: 5%;
+        ///  text-align: center;
+        ///}
+        ///.col-sector {
+        ///  width: 10%;
+        ///  text-align: center;
+        ///}
+        ///
+        ///.col-lap {
+        ///  width: 10%;
+        ///  text-align: center;
+        ///}
+        ///
+        ///.col-delta {
+        ///  width: 6%;
+        ///  text-align: center;
+        ///}
+        ///   
+        ///table {
+        ///    margin: 0;
+        ///         [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string leagueResultsTableStyle {
+            get {
+                return ResourceManager.GetString("leagueResultsTableStyle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [class^=&quot;row0 col-name&quot;]{background-color: rgba(255, 217, 0, 0.61);}
+        ///[class^=&quot;row1 col-name&quot;]{background-color: rgb(151, 151, 151);}
+        ///[class^=&quot;row2 col-name&quot;]{background-color: rgb(205,127,50);}
+        ///    
+        ///.col-name {width: 35%;}
+        ///.col-car  {width: 14%;}
+        ///.col-class {
+        ///  width: 5%;
+        ///  text-align: center;
+        ///}
+        ///.col-sector {
+        ///  width: 10%;
+        ///  text-align: center;
+        ///}
+        ///
+        ///.col-lap {
+        ///  width: 10%;
+        ///  text-align: center;
+        ///}
+        ///
+        ///.col-delta {
+        ///  width: 6%;
+        ///  text-align: center;
+        ///}
+        ///   
+        ///table {
+        ///    margin: 0;
+        ///         [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string timeTrialTableStyle {
+            get {
+                return ResourceManager.GetString("timeTrialTableStyle", resourceCulture);
             }
         }
     }

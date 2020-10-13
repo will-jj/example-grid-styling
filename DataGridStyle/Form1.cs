@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -65,7 +65,7 @@ namespace DataGridStyle
                 {
                     value = Convert.ToDouble(dataGridViewTTable.Rows[i].Cells[columnID].Value.ToString());
                 }
-               
+
                 if (value == min)
                 {
                     dataGridViewTTable.Rows[i].Cells[columnID].Style.ForeColor = Color.White;
@@ -83,6 +83,8 @@ namespace DataGridStyle
 
         private void buttonLoadandStyle_Click(object sender, EventArgs e)
         {
+
+            ReadCSV("../../../testTimeTrial.csv");
             ColourMinValue("S2");
             buttonLoadandStyle.Enabled = false;
         }
