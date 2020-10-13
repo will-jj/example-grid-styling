@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -35,6 +35,7 @@ namespace DataGridStyle
             {
                 dataGridViewTTable.Columns.Add(new DataGridViewTextBoxColumn());
                 dataGridViewTTable.Columns[col].HeaderText = header;
+                dataGridViewTTable.Columns[col].Name = header;
                 col = col + 1;
 
             }
@@ -43,38 +44,32 @@ namespace DataGridStyle
             var lines = File.ReadLines(filePath).Skip(1)
                 .Select(x => x.Split(','))
                 .ToList();
-            lines.RemoveAt(lines.Count - 1);
+
             lines.ForEach(line => dataGridViewTTable.Rows.Add(line));
 
         }
 
 
-
-
-
-
-        private void ColourSector()
+        private void ColourMinValue(string columnID)
         {
 
-            int S1 = 4;
-            var min = dataGridViewTTable.Rows.Cast<DataGridViewRow>().Min(r => Convert.ToDouble(r.Cells[S1].Value));
-            var max = dataGridViewTTable.Rows.Cast<DataGridViewRow>().Max(r => Convert.ToDouble(r.Cells[S1].Value));
-            min = 1;
+            var min = dataGridViewTTable.Rows.Cast<DataGridViewRow>().Min(r => Convert.ToDouble(r.Cells[columnID].Value));
+            var max = dataGridViewTTable.Rows.Cast<DataGridViewRow>().Max(r => Convert.ToDouble(r.Cells[columnID].Value));
             Color purpleSectorColour = new Color();
             purpleSectorColour = Color.FromArgb(127, 4, 158);
 
             for (int i = 0; i < dataGridViewTTable.Rows.Count; i++)
             {
                 Double value = Double.NaN;
-                if (dataGridViewTTable.Rows[i].Cells[S1].Value != null)
+                if (dataGridViewTTable.Rows[i].Cells[columnID].Value != null)
                 {
-                    value = Convert.ToDouble(dataGridViewTTable.Rows[i].Cells[S1].Value.ToString());
+                    value = Convert.ToDouble(dataGridViewTTable.Rows[i].Cells[columnID].Value.ToString());
                 }
                
                 if (value == min)
                 {
-                    dataGridViewTTable.Rows[i].Cells[S1].Style.ForeColor = Color.White;
-                    dataGridViewTTable.Rows[i].Cells[S1].Style.BackColor = purpleSectorColour;
+                    dataGridViewTTable.Rows[i].Cells[columnID].Style.ForeColor = Color.White;
+                    dataGridViewTTable.Rows[i].Cells[columnID].Style.BackColor = purpleSectorColour;
                     break;
                 }
                 if (value == max)
@@ -88,9 +83,7 @@ namespace DataGridStyle
 
         private void buttonLoadandStyle_Click(object sender, EventArgs e)
         {
-            // I know there are better ways to point to this file
-            ReadCSV("../../../testModified.csv");
-            ColourSector();
+            ColourMinValue("S2");
             buttonLoadandStyle.Enabled = false;
         }
 
